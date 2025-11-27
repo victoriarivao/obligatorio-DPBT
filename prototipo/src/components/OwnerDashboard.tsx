@@ -1,8 +1,9 @@
-import { ArrowLeft, CheckCircle2, Clock, Image as ImageIcon, Video } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, Image as ImageIcon, Video, User } from 'lucide-react';
 
 interface OwnerDashboardProps {
   dogName: string;
   onBackToHome: () => void;
+  onOpenProfile: () => void;
 }
 
 // Mock data que simula lo que vería el dueño
@@ -44,7 +45,7 @@ const mockActivity = [
   },
 ];
 
-export function OwnerDashboard({ dogName, onBackToHome }: OwnerDashboardProps) {
+export function OwnerDashboard({ dogName, onBackToHome, onOpenProfile }: OwnerDashboardProps) {
   const completedCount = mockActivity.filter(item => item.completed).length;
   const totalCount = 7; // Total de tareas del día
   const progress = (completedCount / totalCount) * 100;
@@ -60,6 +61,15 @@ export function OwnerDashboard({ dogName, onBackToHome }: OwnerDashboardProps) {
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={onOpenProfile}
+              className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              aria-label="Perfil"
+            >
+              <User className="w-6 h-6" />
+            </button>
+          </div>
         </div>
         
         <div className="text-center">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Bell, Phone, Plus } from "lucide-react";
+import { ArrowLeft, Bell, Phone, Plus, User } from "lucide-react";
 import { ChecklistItem } from "./ChecklistItem";
 import { EmergencyContact } from "./EmergencyContact";
 import { NotificationBanner } from "./NotificationBanner";
@@ -7,6 +7,7 @@ import { NotificationBanner } from "./NotificationBanner";
 interface CaregiverDashboardProps {
   dogName: string;
   onBackToHome: () => void;
+  onOpenProfile: () => void;
 }
 
 export interface CheckItem {
@@ -66,6 +67,7 @@ const initialChecklist: CheckItem[] = [
 export function CaregiverDashboard({
   dogName,
   onBackToHome,
+  onOpenProfile,
 }: CaregiverDashboardProps) {
   const [checklist, setChecklist] =
     useState<CheckItem[]>(initialChecklist);
@@ -134,6 +136,13 @@ export function CaregiverDashboard({
           </button>
           <div className="flex items-center space-x-2">
             <Bell className="w-6 h-6" />
+            <button
+              onClick={onOpenProfile}
+              className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              aria-label="Perfil"
+            >
+              <User className="w-6 h-6" />
+            </button>
           </div>
         </div>
 

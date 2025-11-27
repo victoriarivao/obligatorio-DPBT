@@ -5,14 +5,17 @@ import { RegisterScreen } from './components/RegisterScreen';
 import { RoleSelector } from './components/RoleSelector';
 import { CaregiverDashboard } from './components/CaregiverDashboard';
 import { OwnerDashboard } from './components/OwnerDashboard';
+import { ProfileScreen } from './components/ProfileScreen';
 
-type Screen = 'welcome' | 'login' | 'register' | 'roleSelector' | 'caregiver' | 'owner';
+type Screen = 'welcome' | 'login' | 'register' | 'roleSelector' | 'caregiver' | 'owner' | 'profile';
 type Role = 'caregiver' | 'owner' | null;
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
   const [role, setRole] = useState<Role>(null);
   const [dogName, setDogName] = useState('Max');
+  // Optional: could store email/name when login is implemented
+  const [email] = useState<string | undefined>(undefined);
 
   const handleRoleSelect = (selectedRole: 'caregiver' | 'owner') => {
     setRole(selectedRole);
@@ -22,6 +25,15 @@ export default function App() {
   const handleBackToRoleSelector = () => {
     setRole(null);
     setCurrentScreen('roleSelector');
+  };
+
+  const handleLogout = () => {
+    setRole(null);
+    setCurrentScreen('welcome');
+  };
+
+  const handleOpenProfile = () => {
+    setCurrentScreen('profile');
   };
 
   const renderScreen = () => {
@@ -52,14 +64,24 @@ export default function App() {
       case 'caregiver':
         return (
           <div className="h-full overflow-y-auto bg-gradient-to-b from-blue-50 to-purple-50">
-            <CaregiverDashboard dogName={dogName} onBackToHome={handleBackToRoleSelector} />
+            <CaregiverDashboard dogName={dogName} onBackToHome={handleBackToRoleSelector} onOpenProfile={handleOpenProfile} />
           </div>
         );
       case 'owner':
         return (
           <div className="h-full overflow-y-auto bg-gradient-to-b from-blue-50 to-purple-50">
-            <OwnerDashboard dogName={dogName} onBackToHome={handleBackToRoleSelector} />
+            <OwnerDashboard dogName={dogName} onBackToHome={handleBackToRoleSelector} onOpenProfile={handleOpenProfile} />
           </div>
+        );
+      case 'profile':
+        return (
+          <ProfileScreen
+            role={role as 'caregiver' | 'owner'}
+            dogName={dogName}
+            email={email}
+            onBack={() => setCurrentScreen(role === 'caregiver' ? 'caregiver' : 'owner')}
+            onLogout={handleLogout}
+          />
         );
       default:
         return null;
